@@ -5,6 +5,8 @@ import database as db
 import keyboards as kb
 from config import ADMIN_ID
 import sqlite3
+import urllib.request
+import json
 
 router = Router()
 
@@ -27,8 +29,17 @@ async def list_orders_for_admin(callback: CallbackQuery):
         return
     for order in orders[:5]:
         order_id, user_name, user_id, items, total, status, created_at = order
-        text = f"🧾 *Заказ #{order_id}*\n👤 {user_name}\n📦 {items[:50]}\n💰 {total} руб.\n🏷 Статус: *{status}*"
-        await callback.message.answer(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="✏️ Изменить статус", callback_data=f"change_status_{order_id}")]]))
+        text = (
+            f"🧾 *Заказ #{order_id}*\n"
+            f"👤 {user_name} (ID: {user_id})\n"
+            f"📅 {created_at[:16]}\n"
+            f"📦 {items[:50]}...\n"
+            f"💰 {total} руб.\n"
+            f"🏷 Статус: *{status}*\n"
+        )
+        await callback.message.answer(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="✏️ Изменить статус", callback_data=f"change_status_{order_id}")]
+        ]))
     await callback.answer()
 
 @router.callback_query(F.data.startswith("change_status_"))
@@ -42,7 +53,10 @@ async def ask_new_status(callback: CallbackQuery):
         await callback.message.answer("Заказ не найден")
         return
     current_status = order[3]
-    await callback.message.answer(f"Выберите статус для заказа #{order_id}", reply_markup=kb.status_keyboard(order_id, current_status))
+    await callback.message.answer(
+        f"Выберите новый статус для заказа #{order_id}\nТекущий: {current_status}",
+        reply_markup=kb.status_keyboard(order_id, current_status)
+    )
     await callback.answer()
 
 @router.callback_query(F.data.startswith("set_status_"))
@@ -53,7 +67,17 @@ async def update_status(callback: CallbackQuery):
     parts = callback.data.split("_")
     order_id = int(parts[2])
     new_status = "_".join(parts[3:]).replace("_", " ")
-    db.update_order_status(order_id, new_status)
+    success = db.update_order_status(order_id, new_status)
+    if not success:
+        await callback.message.answer("Неверный статус")
+        return
+    order = db.get_order_by_id(order_id)
+    if order:
+        user_id = order[0]
+        try:
+            await callback.bot.send_message(user_id, f"🔄 Статус вашего заказа №{order_id} изменён на:\n`{new_status}`\n\nИспользуйте /my_orders для просмотра.", parse_mode="Markdown")
+        except:
+            pass
     await callback.message.answer(f"✅ Статус заказа #{order_id} обновлён на: {new_status}")
     await callback.answer()
 
@@ -72,11 +96,11 @@ async def all_orders_admin(message: Message):
         return
     text = "📋 *Последние заказы:*\n\n"
     for order_id, user_name, items, status in rows:
-        text += f"`{order_id}` | {user_name} | {items[:30]} | *{status}*\n"
+        short_items = items[:30] + "…" if len(items) > 30 else items
+        text += f"`{order_id}` | {user_name} | {short_items} | *{status}*\n"
     await message.answer(text, parse_mode="Markdown")
-    import urllib.request
-import json
 
+# Новая команда /sync для синхронизации с Google Sheets
 @router.message(Command("sync"))
 async def sync_from_google(message: Message):
     if message.from_user.id != ADMIN_ID:
@@ -88,9 +112,9 @@ async def sync_from_google(message: Message):
     await message.answer("🔄 Синхронизация началась...")
     
     try:
-        # Скачиваем данные из Google Sheets
-        response = urllib.request.urlopen(url)
-        data = json.loads(response.read())
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=30) as response:
+            data = json.loads(response.read().decode('utf-8'))
         
         conn = sqlite3.connect('dolls.db')
         cur = conn.cursor()
@@ -100,7 +124,6 @@ async def sync_from_google(message: Message):
             order_id = order.get('id')
             status = order.get('status')
             if order_id and status:
-                # Обновляем статус в базе
                 cur.execute("UPDATE orders SET status = ? WHERE id = ?", (status, order_id))
                 updated += cur.rowcount
         
