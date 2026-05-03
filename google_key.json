@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "dolls-after-dark",
+  "private_key_id": "10920caafa8ff7579cbc7cfb9f10e5bba153b176",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDJbH/qQruC+SJU\n6CcQ2LhrWP++sVNXAiAm8iOuUwnBNNgKbuaskMtMNpCu4WO7A8adgfQuiiC9Jk/V\nDLWvmX3Av2thgRiQjt/eO+e7nqKRIWrcJbtN2IYcIH6CtuZLcrL2UhGPUpUzNN5Y\n7d1b51UK2Rf5dJJD7FnJyPxTX9cnK7O/nlWsAc6Lrl+hZvRyZJYj2gJdL6qxqbl6\ngn822nYXX7spssWfXJjV6P9NBL1FbGr5xHSfvi16DepdPIaee8mYVCzfp3cylG6k\nvv2f+1lT4TqEeFPVTCvU1d3uKwIUv/Dha5zRqbGF1BGJJjbzeragN2jW10DFhpic\nQfedXJeDAgMBAAECggEAHsEcxNF8nPJaLhmmQVm9ytIzdlPP9ESEUT3+ebL/Fcty\nQyGMwgN3rwLT04fheOAKNultNZ/sgMT1QoPmx9GJVGFFzYTvEb9m6iE+cDS4AK3Y\nCZYPQ8MQMwI5Hs87WYDBV3/PY5FJ66AiZPSorEwlfXsJQJLudEWFrhwsfrRu/vFV\nNsStojSWfnB5ZYgBoU3eLc25G3KLwlDsp3ox6rwdM2zWnr8zbSHuApVBMLWCMjmv\npOC1tycokZA+e36drLwMtPVkBIBI1dJn79iooopP3UITyC4KLz1gDHnUjIqeYlIc\nXfdYgg6/u0Jd4r6qzYBejh7zesJdlrdyU/mnnZrt4QKBgQD2FXFOC9UNDRF8i8wD\nMfJLapEnwMiLVRB2JGxNGslTz08Bz4RufMnfFjQj9+VqKNDcu8BB2oBB4aKDBA0r\nWs/nUJ5IIPp97cKpVLkCSMWSAbD+bw4nSy92tPxHCA+ULDgsPuaP5s2twOgz/zW0\nc3KUn6+cpEBeF2u5Mw+EATjfYQKBgQDRilpabeKSXot+mwZmtbh+O0Nuu/tIh2Uc\nsfKZZDlaRQulAuUnmvwmqC0AiBrc30mNLczfNLY7tDvEK+mmeHG1dTVCzgsmeM+6\n8eMMVfHvFq7YhPZ6Bj26b9BabEzo0z6/lIUqjuf+PjWoK0eYJvIxkd6S6TuouAfJ\nTxOvbhNVYwKBgQDzSzvcZ8JZxuPU+PnY5tagTVn5rZYYex9tTpFsoeEOZVW9eod6\nHRIQ54jhTsOYc4Yb1dw8v2QyvnvHgIfspzoJfiEfOsutGRZuB39qjLwYoGd3BiE+\nJA1nFYSeTY/pdNaMmBunhg8vjBuG3Pkh0UolOsOK4LFq1UkBr0PVxMePwQKBgH1m\nlD4sJv070bW6JzGOrVP2OZvqqi60wMFUiYBdJ6mrSpW9TtDOAvtLiGsaCSGIC6eO\n8l3eWPUQHvh+4zz6NerHs1FAqBGlGYSiwCOgx8IzS/5OTIeodoa95e5HhBuOWK4k\nvzFCBvrz1f7Hr/gRzr31s0Mui8KkKBzE014YvT9LAoGBAJnBzCiUL8c0YbeQWLWb\nuP9OTP7pW6/0ts+Eb4LH4OEd+z9CZVQBroeTWYC3SwYK1sCaxUnU40OAcalHQ+Bq\nPTaGV1rPAh+bO6R65e4y+8vzAtX9M5YOCIpFfWMSMbMFTLebpp83vPrwe7mD0YFd\nDbTdhR+Q8IDg9Nx7ftGbOupH\n-----END PRIVATE KEY-----\n",
+  "client_email": "dolls-bot@dolls-after-dark.iam.gserviceaccount.com",
+  "client_id": "106592189193013548715",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dolls-bot%40dolls-after-dark.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
