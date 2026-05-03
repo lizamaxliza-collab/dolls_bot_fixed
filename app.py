@@ -1,6 +1,7 @@
 from flask import Flask
 import subprocess
 import os
+import time
 
 app = Flask(__name__)
 
@@ -13,10 +14,12 @@ def health():
     return "OK", 200
 
 if __name__ == "__main__":
-    # Запускаем бота в фоновом процессе
+    # Запускаем Telegram-бота в фоновом режиме
     subprocess.Popen(["python3", "bot.py"])
-
-    # Правильно получаем порт из переменной окружения PORT
-    port = int(os.environ.get("PORT", 8080))
-    # Главное правило: привязываемся к адресу 0.0.0.0
-    app.run(host='0.0.0.0', port=port)
+    time.sleep(2)
+    print("Telegram bot started")
+    
+    # Запускаем веб-сервер
+    port = int(os.environ.get("PORT", 10000))
+    print(f"Starting Flask server on port {port}")
+    app.run(host='0.0.0.0', port=port, debug=False)
