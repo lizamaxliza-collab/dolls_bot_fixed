@@ -100,7 +100,7 @@ async def all_orders_admin(message: Message):
         text += f"`{order_id}` | {user_name} | {short_items} | *{status}*\n"
     await message.answer(text, parse_mode="Markdown")
 
-# Новая команда /sync для синхронизации с Google Sheets
+# КОМАНДА /sync (синхронизация статусов из Google Sheets)
 @router.message(Command("sync"))
 async def sync_from_google(message: Message):
     if message.from_user.id != ADMIN_ID:
