@@ -18,7 +18,7 @@ def health():
     return "OK", 200
 
 def run_bot():
-    # Создаём новый цикл событий для этого потока
+    print("🚀 Запускаем бота...")
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     
@@ -27,19 +27,19 @@ def run_bot():
     dp.include_router(user_router)
     dp.include_router(admin_router)
     
-    # Запускаем бота с обработкой ошибок
+    print("✅ Бот инициализирован, начинаем polling...")
     try:
         loop.run_until_complete(dp.start_polling(bot))
     except Exception as e:
-        print(f"Ошибка бота: {e}")
+        print(f"❌ Ошибка бота: {e}")
     finally:
         loop.close()
 
 if __name__ == "__main__":
-    # Запускаем бота в фоновом потоке
+    print("🔄 Запускаем поток с ботом...")
     bot_thread = threading.Thread(target=run_bot, daemon=True)
     bot_thread.start()
+    print("✅ Поток с ботом запущен")
     
-    # Запускаем Flask сервер в главном потоке
     port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port)
