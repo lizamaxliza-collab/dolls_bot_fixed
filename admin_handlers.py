@@ -74,3 +74,39 @@ async def all_orders_admin(message: Message):
     for order_id, user_name, items, status in rows:
         text += f"`{order_id}` | {user_name} | {items[:30]} | *{status}*\n"
     await message.answer(text, parse_mode="Markdown")
+    import urllib.request
+import json
+
+@router.message(Command("sync"))
+async def sync_from_google(message: Message):
+    if message.from_user.id != ADMIN_ID:
+        await message.answer("Нет прав.")
+        return
+    
+    url = "https://script.google.com/macros/s/AKfycbx1Qbm6KmIoWL9wxTO8AErmQCafsJ1IoRne_GxVmgK9dl21bjyXrrQjQT4UN4nYPvJU0Q/exec"
+    
+    await message.answer("🔄 Синхронизация началась...")
+    
+    try:
+        # Скачиваем данные из Google Sheets
+        response = urllib.request.urlopen(url)
+        data = json.loads(response.read())
+        
+        conn = sqlite3.connect('dolls.db')
+        cur = conn.cursor()
+        updated = 0
+        
+        for order in data:
+            order_id = order.get('id')
+            status = order.get('status')
+            if order_id and status:
+                # Обновляем статус в базе
+                cur.execute("UPDATE orders SET status = ? WHERE id = ?", (status, order_id))
+                updated += cur.rowcount
+        
+        conn.commit()
+        conn.close()
+        await message.answer(f"✅ Обновлено статусов: {updated}")
+    
+    except Exception as e:
+        await message.answer(f"❌ Ошибка: {e}")
